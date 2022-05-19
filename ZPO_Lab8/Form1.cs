@@ -13,8 +13,8 @@ namespace ZPO_Lab8
 {
     public partial class Form1 : Form
     {
-        int a, b, amount;
-        List<Thread> threads = new List<Thread>();
+        int a, b, amount, count = 0;
+        List<Thread> list = new List<Thread>();
 
         public Form1()
         {
@@ -28,23 +28,17 @@ namespace ZPO_Lab8
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int count = 0;
+            count = 0;
+            label1.Text = "0";            
             a = Int32.Parse(textBox1.Text);
             b = Int32.Parse(textBox2.Text);    
-            amount = Int32.Parse(textBox3.Text);
-            Parallel.Invoke(() =>
-            {
-                for (int i = 0; i < amount; i++)
+                          
+                Task.Run(() =>
                 {
-                    count += Task.Run(() =>
-                    {
-                        return diapason(a, b);
-                    }).Result;
+                    diapason(a, b);
+                });                
+                        
 
-                    label1.Text = count.ToString();
-                }
-            });
-            
         }
 
         bool isPrimaryNumber(int a)
@@ -66,18 +60,37 @@ namespace ZPO_Lab8
                 res = false;
 
             return res;
-        }
+        }        
 
-        public int diapason(int a, int b)
-        {
-            int count = 0;
-            for (int i = a; i <= b; i++)
+        public void diapason(int a, int b)
+        {            
+            ParallelLoopResult result = Parallel.For (a, b+1, i =>
             {
                 if (isPrimaryNumber(i))
-                    count++;                
-            }
-            return count;
+                {
+                    count++;
+                    setText(count);                    
+                }                   
+            });
+            
         }
+
+        private delegate void SafeCallDelegate(int data);
+
+        public void setText(int data)
+        {            
+            if (label1.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(setText);                
+                label1.Invoke(d, new object[] {data});
+            }
+            else
+            {
+                label1.Text = data.ToString();
+            }
+        
+        }
+
     }
 }
 
