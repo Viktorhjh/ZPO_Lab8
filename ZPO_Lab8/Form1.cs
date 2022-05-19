@@ -13,8 +13,7 @@ namespace ZPO_Lab8
 {
     public partial class Form1 : Form
     {
-        int a, b, amount, count = 0;
-        List<Thread> list = new List<Thread>();
+        int a, b, count = 0;        
 
         public Form1()
         {
