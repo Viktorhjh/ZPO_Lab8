@@ -35,6 +35,7 @@ namespace ZPO_Lab8
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -87,11 +88,19 @@ namespace ZPO_Lab8
             this.label2.TabIndex = 5;
             this.label2.Text = "Co się aktualnie dzieje?";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(274, 54);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(99, 27);
+            this.textBox3.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(385, 177);
+            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
@@ -114,6 +123,7 @@ namespace ZPO_Lab8
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox3;
     }
 }
 

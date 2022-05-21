@@ -13,7 +13,7 @@ namespace ZPO_Lab8
 {
     public partial class Form1 : Form
     {
-        int a, b, count = 0;        
+        int a, b, count = 0, countIteration, step;        
 
         public Form1()
         {
@@ -25,19 +25,36 @@ namespace ZPO_Lab8
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            count = 0;
-            label1.Text = "0";            
+        private async void button1_Click(object sender, EventArgs e)
+        {            
+            count = 0;            
             a = Int32.Parse(textBox1.Text);
-            b = Int32.Parse(textBox2.Text);    
-                          
-                Task.Run(() =>
-                {
-                    diapason(a, b);
-                });                
-                        
+            b = Int32.Parse(textBox2.Text);
+            countIteration = Int32.Parse(textBox3.Text);
+            step = (b - a) / countIteration;         
+                
+            label1.Text = "Primary numbers: ";            
+            label2.Text = "Task doing somehing...";
+            progressBar1.Value = 0;
+            
+            for (int i = 0; i < countIteration; i++)
+            {
+                await Task.Run(() => diapason(a, a + step));
+                a += step;
+                label1.Text = $"Primary numbers: {count}";               
+                progressBar1.Value = (int)(((double)(i+1) / countIteration) * 100);
 
+            }
+            /*
+            Parallel.For(0, countIteration, i =>
+            {
+                Task.Run(() => diapason(a, a + step));
+                a += step;
+                //label1.Text = $"Primary numbers: {count}";
+                //progressBar1.Value = (int)(((double)(i + 1) / countIteration) * 100);
+            });
+            label1.Text += count;*/
+            label2.Text = "Task is done!";
         }
 
         bool isPrimaryNumber(int a)
@@ -54,7 +71,6 @@ namespace ZPO_Lab8
                     }                    
                 }
             }
-
             else
                 res = false;
 
@@ -63,31 +79,14 @@ namespace ZPO_Lab8
 
         public void diapason(int a, int b)
         {            
-            ParallelLoopResult result = Parallel.For (a, b+1, i =>
+            for(int i = a; i < b; i++)
             {
-                if (isPrimaryNumber(i))
+                if (isPrimaryNumber(i)) 
                 {
                     count++;
-                    setText(count);                    
-                }                   
-            });
+                }
+            }
             
-        }
-
-        private delegate void SafeCallDelegate(int data);
-
-        public void setText(int data)
-        {            
-            if (label1.InvokeRequired)
-            {
-                var d = new SafeCallDelegate(setText);                
-                label1.Invoke(d, new object[] {data});
-            }
-            else
-            {
-                label1.Text = data.ToString();
-            }
-        
         }
 
     }
